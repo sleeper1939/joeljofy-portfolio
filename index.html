@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio — Automation &amp; Robotics Engineering</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0a0e14;
+    --panel: #10151c;
+    --card: #131a22;
+    --border: #1e2731;
+    --border-hover: #2a3742;
+    --cyan: #22d3ee;
+    --cyan-dim: #0e7490;
+    --amber: #f59e0b;
+    --text: #e6edf3;
+    --muted: #7c8a99;
+  }
+  *{ scroll-behavior: smooth; }
+  body{
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+  }
+  .font-display{ font-family: 'Space Grotesk', sans-serif; }
+  .font-mono{ font-family: 'JetBrains Mono', monospace; }
+
+  .grid-bg{
+    background-image:
+      linear-gradient(rgba(34,211,238,0.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(34,211,238,0.045) 1px, transparent 1px);
+    background-size: 44px 44px;
+  }
+
+  .led{
+    width: 7px; height: 7px; border-radius: 999px;
+    background: var(--cyan);
+    box-shadow: 0 0 6px 1px var(--cyan), 0 0 2px var(--cyan);
+    animation: blink 2.4s ease-in-out infinite;
+  }
+  .led-amber{ background: var(--amber); box-shadow: 0 0 6px 1px var(--amber); animation-delay: .6s;}
+  @keyframes blink{ 0%,100%{opacity:1;} 50%{opacity:.25;} }
+
+  .trace-path{
+    stroke-dasharray: 6 10;
+    animation: dash 8s linear infinite;
+  }
+  @keyframes dash{ to{ stroke-dashoffset: -400; } }
+
+  .pin-label::before{
+    content: attr(data-pin);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--cyan-dim);
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .card-hover{ transition: transform .35s ease, border-color .35s ease, box-shadow .35s ease; }
+  .card-hover:hover{
+    transform: translateY(-4px);
+    border-color: var(--cyan);
+    box-shadow: 0 12px 40px -12px rgba(34,211,238,0.25);
+  }
+
+  .tag{
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.02em;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 4px 10px;
+    border-radius: 3px;
+    background: rgba(255,255,255,0.015);
+  }
+
+  .filter-btn{
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 8px 16px;
+    border-radius: 3px;
+    transition: all .25s ease;
+  }
+  .filter-btn.active{
+    border-color: var(--cyan);
+    color: var(--cyan);
+    background: rgba(34,211,238,0.06);
+  }
+  .filter-btn:hover{ border-color: var(--border-hover); color: var(--text); }
+
+  ::selection{ background: var(--cyan); color: #001015; }
+
+  .skill-chip{
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    border: 1px solid var(--border);
+    padding: 8px 14px;
+    border-radius: 3px;
+    color: var(--text);
+    background: var(--panel);
+    transition: border-color .25s ease, transform .2s ease;
+  }
+  .skill-chip:hover{ border-color: var(--cyan); transform: translateY(-2px); }
+
+  .fade-up{ opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
+  .fade-up.in{ opacity: 1; transform: translateY(0); }
+
+  nav a{ position: relative; }
+  nav a::after{
+    content:''; position:absolute; left:0; bottom:-4px; width:0; height:1px; background: var(--cyan);
+    transition: width .25s ease;
+  }
+  nav a:hover::after{ width: 100%; }
+
+  .scan{
+    background: linear-gradient(180deg, transparent, rgba(34,211,238,0.05), transparent);
+    height: 140px; width: 100%; position:absolute; left:0; top:-140px;
+    animation: scan 6s linear infinite;
+  }
+  @keyframes scan{ to{ top: 100%; } }
+
+  #caseModal{
+    position: fixed; inset: 0; z-index: 100;
+    background: rgba(4,6,9,0.82);
+    backdrop-filter: blur(4px);
+    display: none;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 6vh 20px;
+    overflow-y: auto;
+  }
+  #caseModal.open{ display: flex; }
+  #caseModalPanel{
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    max-width: 780px;
+    width: 100%;
+    padding: 32px;
+    position: relative;
+    animation: modalIn .28s ease;
+  }
+  @keyframes modalIn{ from{ opacity:0; transform: translateY(12px);} to{opacity:1; transform:translateY(0);} }
+  #caseModalClose{
+    position: absolute; top: 20px; right: 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; color: var(--muted);
+    border: 1px solid var(--border);
+    padding: 6px 10px; border-radius: 4px;
+    cursor: pointer; background: transparent;
+  }
+  #caseModalClose:hover{ color: var(--text); border-color: var(--cyan); }
+  .case-col h4{
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.1em;
+    color: var(--cyan); margin-bottom: 10px;
+  }
+  .case-col ul{ list-style: none; padding: 0; margin: 0; }
+  .case-col li{
+    font-size: 13.5px; line-height: 1.5; color: var(--muted);
+    padding-left: 14px; position: relative; margin-bottom: 8px;
+  }
+  .case-col li::before{
+    content: '›'; position: absolute; left: 0; color: var(--cyan-dim);
+  }
+</style>
+</head>
+<body class="antialiased">
+
+<!-- NAV -->
+<header class="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-[#0a0e14]/80 border-b" style="border-color: var(--border);">
+  <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+    <a href="#top" class="font-display font-semibold text-lg tracking-tight flex items-center gap-2">
+      <span class="led"></span>
+      JOEL.<span style="color: var(--cyan);">JOFY</span>
+    </a>
+    <nav class="hidden md:flex items-center gap-8 font-mono text-[13px]" style="color: var(--muted);">
+      <a href="#about" class="hover:text-white">ABOUT</a>
+      <a href="#projects" class="hover:text-white">PROJECTS</a>
+      <a href="#skills" class="hover:text-white">SKILLS</a>
+      <a href="#contact" class="hover:text-white">CONTACT</a>
+    </nav>
+    <a href="#contact" class="filter-btn hidden sm:inline-block">GET IN TOUCH →</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section id="top" class="relative overflow-hidden grid-bg pt-40 pb-28 border-b" style="border-color: var(--border);">
+  <div class="absolute inset-0 overflow-hidden pointer-events-none">
+    <svg class="absolute -top-10 -right-24 opacity-40" width="600" height="600" viewBox="0 0 600 600" fill="none">
+      <circle cx="300" cy="300" r="220" stroke="#1e2731" stroke-width="1"/>
+      <circle cx="300" cy="300" r="160" stroke="#1e2731" stroke-width="1"/>
+      <path class="trace-path" d="M300 80 V220 H420 V340 H520" stroke="#22d3ee" stroke-width="1.5"/>
+      <path class="trace-path" d="M120 300 H240 V420 H180 V520" stroke="#22d3ee" stroke-width="1.5" style="animation-delay:2s"/>
+      <circle cx="420" cy="340" r="4" fill="#22d3ee"/>
+      <circle cx="240" cy="420" r="4" fill="#f59e0b"/>
+    </svg>
+  </div>
+
+  <div class="max-w-6xl mx-auto px-6 relative">
+    <div class="fade-up in flex items-center gap-2 font-mono text-[12px] mb-6" style="color: var(--cyan);">
+      <span class="led"></span> BY JOEL JOFY 
+    </div>
+    <h1 class="fade-up in font-display font-semibold text-5xl sm:text-6xl lg:text-7xl leading-[1.05] tracking-tight max-w-4xl">
+      Engineering <span style="color: var(--cyan);">Projects</span> Portfolio.
+    </h1>
+    <p class="fade-up in mt-6 max-w-2xl text-lg leading-relaxed" style="color: var(--muted);">
+      A curated collection of robotics projects, mechanical designs, control systems, and autonomous solutions — showcasing my engineering expertise, programming skills, and passion for creating innovative robotic systems.
+    </p>
+    <div class="fade-up in mt-10 flex flex-wrap gap-4">
+      <a href="#projects" class="px-6 py-3 rounded-md font-mono text-sm font-medium" style="background: var(--cyan); color: #001015;">
+        VIEW_PROJECTS →
+      </a>
+      <a href="https://www.linkedin.com/in/joeljofy--2007--" target="_blank" class="px-6 py-3 rounded-md font-mono text-sm border" style="border-color: var(--border); color: var(--text);">
+        CONNECT_ON_LINKEDIN
+      </a>
+    </div>
+
+    <div class="fade-up in mt-16 grid grid-cols-3 sm:grid-cols-3 gap-6 max-w-xl font-mono">
+      <div>
+        <div class="text-3xl font-display font-semibold" style="color: var(--cyan);">5</div>
+        <div class="text-xs mt-1" style="color: var(--muted);">CORE PROJECTS</div>
+      </div>
+      <div>
+        <div class="text-3xl font-display font-semibold" style="color: var(--cyan);">3</div>
+        <div class="text-xs mt-1" style="color: var(--muted);">MICROCONTROLLER PLATFORMS</div>
+      </div>
+      <div>
+        <div class="text-3xl font-display font-semibold" style="color: var(--cyan);">∞</div>
+        <div class="text-xs mt-1" style="color: var(--muted);">JUMPER WIRES SOLDERED</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="py-24 border-b" style="border-color: var(--border);">
+  <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-3 gap-12">
+    <div class="fade-up">
+      <div class="pin-label" data-pin="// 01"></div>
+      <h2 class="font-display font-semibold text-3xl">About</h2>
+    </div>
+    <div class="fade-up md:col-span-2 text-lg leading-relaxed" style="color: var(--muted);">
+      <p class="mb-4">
+        I am an Automation &amp; Robotics Engineering student passionate about building intelligent systems that combine hardware, software, and mechanical design. I learn best through hands-on experimentation and iterative development, turning ideas into practical and reliable engineering solutions.
+      <p>
+        I am particularly interested in robotics, embedded systems, and automation technologies that solve real-world problems. I am always eager to take on challenging projects that push me to learn, innovate, and grow as an engineer.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects" class="py-24 border-b" style="border-color: var(--border);">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="fade-up mb-10">
+      <div class="pin-label" data-pin="// 02"></div>
+      <h2 class="font-display font-semibold text-3xl mb-2">Projects</h2>
+      <p class="text-sm max-w-xl" style="color: var(--muted);">Selected builds spanning embedded control, mechanical automation, and wireless systems[cite: 1].</p>
+    </div>
+
+    <div class="fade-up flex flex-wrap gap-3 mb-10" id="filterBar">
+      <button class="filter-btn active" data-filter="all">ALL</button>
+      <button class="filter-btn" data-filter="hardware">ROBOTICS / HARDWARE</button>
+      <button class="filter-btn" data-filter="software">SOFTWARE / AUTOMATION</button>
+    </div>
+
+    <div id="projectGrid" class="grid sm:grid-cols-2 lg:grid-cols-2 gap-8">
+
+      <!-- Project 1: Bluetooth-Enabled Rover -->
+      <div class="project-card card-hover rounded-lg border overflow-hidden flex flex-col" data-cat="hardware" style="background: var(--card); border-color: var(--border);">
+        <div class="h-52 overflow-hidden relative bg-zinc-900 flex items-center justify-center">
+          <img src="IMAGES/ROVER_REMOTE.png" alt="ROVER_REMOTE">
+          <div class="absolute top-3 right-3 flex items-center gap-1.5 px-2 py-1 rounded-full bg-black/60 backdrop-blur-sm">
+            <span class="led"></span><span class="font-mono text-[10px]" style="color: var(--cyan);">COMPLETED</span>
+          </div>
+        </div>
+        <div class="p-6 flex flex-col flex-1">
+          <div class="flex flex-wrap gap-2 mb-3">
+            <span class="tag">ARDUINO</span><span class="tag">BLUETOOTH</span><span class="tag">OMNI-DIRECTIONAL</span><span class="tag">POWER-OPTIMIZED</span>
+          </div>
+          <h3 class="font-display font-semibold text-xl mb-2">Bluetooth-Enabled Rover System</h3>
+          <p class="text-sm mb-5 flex-1" style="color: var(--muted);">
+            Designed a remotely operated omni-directional vehicle using Arduino wireless control[cite: 1]. Integrates a physical joystick remote configuration for highly responsive, stable real-time steering[cite: 1]. Focused heavily on maximizing system efficiency to ensure high operational battery life with minimal maintenance parameters[cite: 1].
+          </p>
+          <button onclick="openCaseStudy('rover')" class="mt-auto font-mono text-xs px-4 py-2 rounded-md border self-start hover:border-cyan-400 transition" style="border-color: var(--border); color: var(--cyan);">
+            VIEW_METRICS →
+          </button>
+        </div>
+      </div>
+
+      <!-- Project 2: Intelligent Automated Gate -->
+      <div class="project-card card-hover rounded-lg border overflow-hidden flex flex-col" data-cat="hardware software" style="background: var(--card); border-color: var(--border);">
+        <div class="h-52 overflow-hidden relative bg-zinc-900 flex items-center justify-center">
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADIAQMAAAC5Fi4FAAAABlBMVEUAAAD///+l2Z/dAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAYklEQVRIie3SMQ2AMBAF0EeChEASMEkJSEIC/hLggKbg5Kip36bcvVd+uYx5xpzjjjnHnOPnMnfcAwEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBm8AYX4cSDN/U3K5PAAAAAElFTkSuQmCC" class="w-full h-full object-cover" alt="Intelligent Automated Gate Design">
+          <div class="absolute top-3 right-3 flex items-center gap-1.5 px-2 py-1 rounded-full bg-black/60 backdrop-blur-sm">
+            <span class="led"></span><span class="font-mono text-[10px]" style="color: var(--cyan);">STABLE PROTOTYPE</span>
+          </div>
+        </div>
+        <div class="p-6 flex flex-col flex-1">
+          <div class="flex flex-wrap gap-2 mb-3">
+            <span class="tag">ARDUINO</span><span class="tag">ULTRASONIC</span><span class="tag">SERVO MOTOR</span><span class="tag">LCD INTERFACE</span>
+          </div>
+          <h3 class="font-display font-semibold text-xl mb-2">Intelligent Automated Gate Design</h3>
+          <p class="text-sm mb-5 flex-1" style="color: var(--muted);">
+            An intelligent vehicle access control system integrating precise ultrasonic detection and servo-driven automation[cite: 1]. Features a custom 16x2 LCD UI tracking parking availability dynamically[cite: 1]. Designed as a robust, scalable, low-cost platform that successfully overcomes contrast, timing, and data synchronization hurdles[cite: 1].
+          </p>
+          <button onclick="openCaseStudy('gate')" class="mt-auto font-mono text-xs px-4 py-2 rounded-md border self-start hover:border-cyan-400 transition" style="border-color: var(--border); color: var(--cyan);">
+            VIEW_METRICS →
+          </button>
+        </div>
+      </div>
+
+      <!-- Project 3: EV3 Elevator Shaft System -->
+      <div class="project-card card-hover rounded-lg border overflow-hidden flex flex-col" data-cat="hardware software" style="background: var(--card); border-color: var(--border);">
+        <div class="h-52 overflow-hidden relative bg-zinc-900 flex items-center justify-center">
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAADIAQMAAAAHJ2yPAAAABlBMVEUAAAD///+l2Z/dAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAWElEQVRIie3SMQ3AIBAEwccgoAP8S4AGDCEpOD2qqdcl2b1d3swx5hxzjLnGnGNc5q6/BwEBARsCArYEBGwICNgQELAhIGBDQMCGgIANAQEbAgI2BARsCBjjA3ovC99zGkcaAAAAAElFTkSuQmCC" class="w-full h-full object-cover" alt="EV3 Elevator Shaft System">
+          <div class="absolute top-3 right-3 flex items-center gap-1.5 px-2 py-1 rounded-full bg-black/60 backdrop-blur-sm">
+            <span class="led led-amber"></span><span class="font-mono text-[10px]" style="color: var(--amber);">UPGRADED TO ARDUINO</span>
+          </div>
+        </div>
+        <div class="p-6 flex flex-col flex-1">
+          <div class="flex flex-wrap gap-2 mb-3">
+            <span class="tag">LEGO EV3</span><span class="tag">ARDUINO UNO UPGRADE</span><span class="tag">SERVO GATES</span><span class="tag">LIVE TRACKING</span>
+          </div>
+          <h3 class="font-display font-semibold text-xl mb-2">EV3 - Elevator Shaft System</h3>
+          <p class="text-sm mb-5 flex-1" style="color: var(--muted);">
+            Multi-story cargo lift system originally designed on LEGO EV3[cite: 1]. Evolved into a premium industrial prototype by switching to an Arduino Uno architecture with custom UI telemetry tracking[cite: 1]. Features dual safety servo motors inside the shaft operating as active container security gates[cite: 1].
+          </p>
+          <button onclick="openCaseStudy('elevator')" class="mt-auto font-mono text-xs px-4 py-2 rounded-md border self-start hover:border-cyan-400 transition" style="border-color: var(--border); color: var(--cyan);">
+            VIEW_METRICS →
+          </button>
+        </div>
+      </div>
+
+      <!-- Project 4: EV3 Line Follower -->
+      <div class="project-card card-hover rounded-lg border overflow-hidden flex flex-col" data-cat="hardware" style="background: var(--card); border-color: var(--border);">
+        <div class="h-52 overflow-hidden relative bg-zinc-900 flex items-center justify-center">
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAADIAQMAAAAHJ2yPAAAABlBMVEUAAAD///+l2Z/dAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAWElEQVRIie3SMQ3AIBAEwccgoAP8S4AGDCEpOD2qqdcl2b1d3swx5hxzjLnGnGNc5q6/BwEBARsCArYEBGwICNgQELAhIGBDQMCGgIANAQEbAgI2BARsCBjjA3ovC99zGkcaAAAAAElFTkSuQmCC" class="w-full h-full object-cover" alt="EV3 Line Follower Robot">
+          <div class="absolute top-3 right-3 flex items-center gap-1.5 px-2 py-1 rounded-full bg-black/60 backdrop-blur-sm">
+            <span class="led"></span><span class="font-mono text-[10px]" style="color: var(--cyan);">COMPLETED</span>
+          </div>
+        </div>
+        <div class="p-6 flex flex-col flex-1">
+          <div class="flex flex-wrap gap-2 mb-3">
+            <span class="tag">LEGO EV3</span><span class="tag">INFRARED SENSORS</span><span class="tag">BLOCK LOGIC</span><span class="tag">SPIKEBOT PROFILE</span>
+          </div>
+          <h3 class="font-display font-semibold text-xl mb-2">EV3 - Line Follower</h3>
+          <p class="text-sm mb-5 flex-1" style="color: var(--muted);">
+            Fully automated trajectory tracking robot engineered to navigate complex tracks with zero human intervention[cite: 1]. Utilizes fine-tuned infrared sensors combined with motor logic blocks to ensure high positional feedback accuracy during aggressive cornering[cite: 1].
+          </p>
+          <button onclick="openCaseStudy('line')" class="mt-auto font-mono text-xs px-4 py-2 rounded-md border self-start hover:border-cyan-400 transition" style="border-color: var(--border); color: var(--cyan);">
+            VIEW_METRICS →
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills" class="py-24 border-b" style="border-color: var(--border);">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="fade-up flex items-end justify-between mb-12">
+      <div>
+        <div class="pin-label" data-pin="// 03"></div>
+        <h2 class="font-display font-semibold text-3xl">Core Skills</h2>
+      </div>
+      <p class="hidden sm:block text-sm max-w-xs text-right" style="color: var(--muted);">
+        Tools I reach for across the hardware/software stack — from schematic to shipped mechanism.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-8">
+      <div class="fade-up rounded-lg border p-6" style="background: var(--panel); border-color: var(--border);">
+        <h3 class="font-mono text-xs tracking-widest mb-5" style="color: var(--cyan);">HARDWARE</h3>
+        <div class="flex flex-wrap gap-2">
+          <span class="skill-chip">Arduino (Uno/Mega)</span>
+          <span class="skill-chip">LEGO EV3 System</span>
+          <span class="skill-chip">LEGO SPIKE Prime</span>
+          <span class="skill-chip">Omni-directional Drive</span>
+          <span class="skill-chip">Ultrasonic Sensors</span>
+          <span class="skill-chip">Servo &amp; DC Motor Control</span>
+          <span class="skill-chip">Bluetooth (HC-05)</span>
+          <span class="skill-chip">Infrared Sensors</span>
+        </div>
+      </div>
+      <div class="fade-up rounded-lg border p-6" style="background: var(--panel); border-color: var(--border);">
+        <h3 class="font-mono text-xs tracking-widest mb-5" style="color: var(--cyan);">SOFTWARE</h3>
+        <div class="flex flex-wrap gap-2">
+          <span class="skill-chip">C++ / Embedded C</span>
+          <span class="skill-chip">Arduino IDE</span>
+          <span class="skill-chip">Block Programming</span>
+          <span class="skill-chip">Wireless Serial Config</span>
+          <span class="skill-chip">Data Synchronization</span>
+        </div>
+      </div>
+      <div class="fade-up rounded-lg border p-6" style="background: var(--panel); border-color: var(--border);">
+        <h3 class="font-mono text-xs tracking-widest mb-5" style="color: var(--cyan);">SYSTEMS</h3>
+        <div class="flex flex-wrap gap-2">
+          <span class="skill-chip">Access-Control Automation</span>
+          <span class="skill-chip">Real-Time LCD Interfaces</span>
+          <span class="skill-chip">Closed-Loop Feedback</span>
+          <span class="skill-chip">Line-Following Algorithms</span>
+          <span class="skill-chip">Power Optimization</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT / FOOTER -->
+<footer id="contact" class="py-20 relative overflow-hidden">
+  <div class="scan"></div>
+  <div class="max-w-6xl mx-auto px-6 relative">
+    <h2 class="font-display font-semibold text-3xl mb-4">Contact</h2>
+    <p class="max-w-lg mb-10" style="color: var(--muted);">
+      IN ORDER TO CONTACT ME
+    </p>
+    <div class="flex flex-wrap gap-4 mb-16">
+      <a href="mailto:joeljofy@gmail.com" class="px-6 py-3 rounded-md font-mono text-sm font-medium" style="background: var(--cyan); color: #001015;">E-mail me →</a>
+      <span class="px-6 py-3 rounded-md font-mono text-sm border flex items-center" style="border-color: var(--border); color: var(--text);">+61-425-306-541</span>
+      <a href="https://www.linkedin.com/in/joeljofy--2007--" target="_blank" class="px-6 py-3 rounded-md font-mono text-sm border" style="border-color: var(--border); color: var(--text);">LINKEDIN</a>
+    </div>
+    <div class="flex items-center justify-between flex-wrap gap-4 pt-8 border-t font-mono text-xs" style="border-color: var(--border); color: var(--muted);">
+      <span>© 2026 — BY JOEL JOFY</span>
+      <span class="flex items-center gap-2"><span class="led"></span> SYSTEM_ONLINE</span>
+    </div>
+  </div>
+</footer>
+
+<!-- CASE STUDY MODAL -->
+<div id="caseModal">
+  <div id="caseModalPanel">
+    <button id="caseModalClose" onclick="closeModal()">CLOSE // X</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<script>
+  // Scroll reveal
+  const revealEls = document.querySelectorAll('.fade-up');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); } });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
+
+  // Project filter
+  const buttons = document.querySelectorAll('.filter-btn');
+  const cards = document.querySelectorAll('.project-card');
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      buttons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.dataset.filter;
+      cards.forEach(card => {
+        const cats = card.dataset.cat.split(' ');
+        const show = filter === 'all' || cats.includes(filter);
+        card.style.display = show ? 'flex' : 'none';
+      });
+    });
+  });
+
+  // Dynamic Case Studies Data
+  const caseStudies = {
+    rover: {
+      title: "Bluetooth-Enabled Rover System",
+      desc: "Comprehensive breakdown of wireless omni-directional platform design[cite: 1].",
+      sections: [
+        { title: "Project Objective", items: ["Design a remotely operated omni-directional vehicle configuration[cite: 1].", "Ensure extended operational runtimes with minimal system degradation[cite: 1]."] },
+        { title: "Engineering Execution", items: ["Integrated wireless communication layers using Arduino microcontrollers and HC-05 modules[cite: 1].", "Implemented a physical analog joystick hardware interface for direct real-time trajectory adjustment[cite: 1]."] },
+        { title: "System Results", items: ["Achieved seamless, low-latency omni-directional mobility performance[cite: 1].", "Demonstrated optimal power profiles and reliable hardware stability under continuous load cycles[cite: 1]."] }
+      ]
+    },
+    gate: {
+      title: "Intelligent Automated Access Gate",
+      desc: "Design and deployment details of an automated, smart vehicle tracking platform[cite: 1].",
+      sections: [
+        { title: "Project Objective", items: ["Build an automated perimeter gate capable of efficient vehicle access management[cite: 1].", "Integrate real-time tracking systems to accurately display localized slot vacancies[cite: 1]."] },
+        { title: "Engineering Execution", items: ["Utilized ultrasonic arrays paired with microcontrollers for high-accuracy obstacle profiling[cite: 1].", "Programmed intelligent servo-driven gate mechanics and synced them to a standard 16x2 LCD panel[cite: 1].", "Overcame timing anomalies, contrast drops, and data bus sync limits through detailed iterative debugging[cite: 1]."] },
+        { title: "System Results", items: ["Delivered steady, zero-drift target detection with smooth servo gate mechanical cycles[cite: 1].", "Maintained an accurate live data readout to display current slot capacity[cite: 1].", "Produced a highly cost-efficient, industrial-ready prototype ready for scalable deployment[cite: 1]."] }
+      ]
+    },
+    elevator: {
+      title: "EV3 Multi-Story Elevator Shaft System",
+      desc: "Refining mechanical hoist platforms from basic educational modules to structured controllers[cite: 1].",
+      sections: [
+        { title: "Project Objective", items: ["Construct a modular elevator framework capable of carrying payload securely across distinct floor zones[cite: 1]."] },
+        { title: "Engineering Execution", items: ["Programmed the original movement cycle using block logic arrays to drive dual high-torque motors[cite: 1].", "Upgraded system electronics by replacing the block-level system with a dedicated Arduino Uno core[cite: 1].", "Added dual micro-servos internally to act as physical security barriers to protect the cargo payload[cite: 1]."] },
+        { title: "System Results", items: ["The heavy-duty physical hoist system successfully carried weight volumes exceeding original load predictions[cite: 1].", "Identified and balanced micro-instabilities caused by suspension line flexing[cite: 1].", "The clean text layout upgrade provided structured real-time metrics tracking the lift platform's exact position[cite: 1]."] }
+      ]
+    },
+    line: {
+      title: "EV3 Automated Line Follower",
+      desc: "Autonomous trajectory tracking based on infrared boundary response mechanics[cite: 1].",
+      sections: [
+        { title: "Project Objective", items: ["Develop an autonomous robotic platform to traverse complex geometric floor tracks without operator intervention[cite: 1]."] },
+        { title: "Engineering Execution", items: ["Mapped closed-loop motor reactions using infrared light reflection sensors[cite: 1].", "Programmed automated control logic blocks to handle instantaneous cross-track changes[cite: 1]."] },
+        { title: "System Results", items: ["Achieved consistent tracking behavior along standard black path lines with zero operator correction[cite: 1].", "Demonstrated high steering precision and track retention through aggressive, high-speed corner profiles[cite: 1]."] }
+      ]
+    }
+  };
+
+  function openCaseStudy(id) {
+    const study = caseStudies[id];
+    let html = `
+      <h3 class="font-display font-semibold text-2xl mb-2" style="color:var(--text);">${study.title}</h3>
+      <p class="text-sm font-mono mb-8" style="color:var(--cyan);">${study.desc}</p>
+      <div class="grid md:grid-cols-3 gap-6 text-left">
+    `;
+    
+    study.sections.forEach(sec => {
+      html += `
+        <div class="case-col">
+          <h4>${sec.title.toUpperCase()}</h4>
+          <ul>
+            ${sec.items.map(item => `<li>${item}</li>`).join('')}
+          </ul>
+        </div>
+      `;
+    });
+    
+    html += `</div>`;
+    document.getElementById('modalContent').innerHTML = html;
+    document.getElementById('caseModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    document.getElementById('caseModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+</script>
+</body>
+</html>
