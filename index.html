@@ -261,10 +261,7 @@
     </div>
     <div class="fade-up md:col-span-2 text-lg leading-relaxed" style="color: var(--muted);">
       <p class="mb-4">
-        I am an Automation &amp; Robotics Engineering student passionate about building intelligent systems that combine hardware, software, and mechanical design. I learn best through hands-on experimentation and iterative development, turning ideas into practical and reliable engineering solutions.
-      </p>
-      <p>
-        I am particularly interested in robotics, embedded systems, and automation technologies that solve real-world problems. I am always eager to take on challenging projects that push me to learn, innovate, and grow as an engineer.
+        Automation and Robotics Engineering student, with hands-on experience in hardware-software integration, mechanical design, embedded systems, and automation technologies. Skilled in iterative prototyping, testing, and system development using engineering design principles. Strong interest in robotics, control systems, embedded programming, and automation solutions for real-world industrial and technical applications. Proven ability to learn quickly, adapt to new tools and technologies, and deliver reliable, functional engineering solutions through hands-on experimentation.
       </p>
     </div>
   </div>
@@ -288,10 +285,35 @@
 
     <div id="projectGrid" class="grid sm:grid-cols-2 lg:grid-cols-2 gap-8">
 
-      <!-- Project 1: Bluetooth-Enabled Rover -->
+      <!-- Project 5: Arduino Camera Module -->
       <div class="project-card card-hover rounded-lg border overflow-hidden flex flex-col" data-cat="arduino" style="background: var(--card); border-color: var(--border);">
         <div class="h-60 overflow-hidden relative bg-zinc-900">
-          <img src="IMAGES/ROVER_&_REMOTE.png" alt="Bluetooth Rover System" class="w-full h-full object-cover">
+          <img src="IMAGES/CAMERA_MODULE.jpeg" alt="Bluetooth Rover System" class="w-full h-full object-contain">
+          <div class="absolute bottom-3 left-3 px-2.5 py-1 rounded bg-black/80 backdrop-blur-md border border-zinc-800 font-mono text-[10px]" style="color: var(--cyan);">
+            Camera Module Circuitry
+          </div>
+          <div class="absolute top-3 right-3 flex items-center gap-1.5 px-2 py-1 rounded-full bg-black/60 backdrop-blur-sm">
+            <span class="led"></span><span class="font-mono text-[10px]" style="color: var(--cyan);">STABLE PROTOTYPE</span>
+          </div>
+        </div>
+        <div class="p-6 flex flex-col flex-1">
+          <div class="flex flex-wrap gap-2 mb-3">
+            <span class="tag">ARDUINO</span><span class="tag">BLUETOOTH</span><span class="tag">CAMERA-MODULE</span><span class="tag">DATA SYNC.</span>
+          </div>
+          <h3 class="font-display font-semibold text-xl mb-2">Camera Module Interface</h3>
+          <p class="text-sm mb-5 flex-1" style="color: var(--muted);">
+           This project implements a vision-sensing system using a camera module interfaced with an Arduino Uno, transmitting captured image/sensor data to a laptop for real-time processing and analysis. The system demonstrates core skills in embedded systems programming, serial communication protocols, and hardware-software integration — key competencies for automation and robotics applications requiring visual feedback.
+          </p>
+          <button onclick="openCaseStudy('camera')" class="mt-auto font-mono text-xs px-4 py-2 rounded-md border self-start hover:border-cyan-400 transition" style="border-color: var(--border); color: var(--cyan);">
+            Learn More >>>
+          </button>
+        </div>
+      </div>
+
+      <!-- Project 4: Bluetooth-Enabled Rover -->
+      <div class="project-card card-hover rounded-lg border overflow-hidden flex flex-col" data-cat="arduino" style="background: var(--card); border-color: var(--border);">
+        <div class="h-60 overflow-hidden relative bg-zinc-900">
+          <img src="IMAGES/ROVER_&_REMOTE.png" alt="Bluetooth Rover System" class="w-full h-full object-contain">
           <div class="absolute bottom-3 left-3 px-2.5 py-1 rounded bg-black/80 backdrop-blur-md border border-zinc-800 font-mono text-[10px]" style="color: var(--cyan);">
             Rover Platform & Control Interface
           </div>
@@ -313,10 +335,10 @@
         </div>
       </div>
 
-      <!-- Project 2: Intelligent Automated Gate -->
+      <!-- Project 3: Intelligent Automated Gate -->
       <div class="project-card card-hover rounded-lg border overflow-hidden flex flex-col" data-cat="arduino" style="background: var(--card); border-color: var(--border);">
         <div class="h-60 overflow-hidden relative bg-zinc-900">
-          <img src="IMAGES/GATE_DESIGN.png" alt="Intelligent Automated Gate Design" class="w-full h-full object-cover">
+          <img src="IMAGES/GATE_DESIGN.png" alt="Intelligent Automated Gate Design" class="w-full h-full object-contain">
           <div class="absolute bottom-3 left-3 px-2.5 py-1 rounded bg-black/80 backdrop-blur-md border border-zinc-800 font-mono text-[10px]" style="color: var(--cyan);">
             Prototype_1
           </div>
@@ -338,12 +360,12 @@
         </div>
       </div>
 
-      <!-- Project 3: EV3 Elevator Shaft System -->
+      <!-- Project 2: EV3 Elevator Shaft System -->
       <div class="project-card card-hover rounded-lg border overflow-hidden flex flex-col" data-cat="arduino ev3" style="background: var(--card); border-color: var(--border);">
         <div class="h-60 overflow-hidden relative bg-zinc-900">
-          <img src="IMAGES/ELEVATOR_SHAFT.png" alt="EV3 Elevator Shaft System" class="w-full h-full object-cover">
+          <img src="IMAGES/ELEVATOR_SHAFT_3.png" alt="EV3 Elevator Shaft System" class="w-full h-full object-contain">
           <div class="absolute bottom-3 left-3 px-2.5 py-1 rounded bg-black/80 backdrop-blur-md border border-zinc-800 font-mono text-[10px]" style="color: var(--cyan);">
-            // MECHANICAL HOIST &amp; SHAFT
+            Full Hoist Shaft & Tower Structure
           </div>
           <div class="absolute top-3 right-3 flex items-center gap-1.5 px-2 py-1 rounded-full bg-black/60 backdrop-blur-sm">
             <span class="led led-amber"></span><span class="font-mono text-[10px]" style="color: var(--amber);">UPGRADED TO ARDUINO</span>
@@ -363,22 +385,22 @@
         </div>
       </div>
 
-      <!-- Project 4: EV3 Line Follower -->
+      <!-- Project 1: EV3 Line Follower -->
       <div class="project-card card-hover rounded-lg border overflow-hidden flex flex-col" data-cat="ev3 spikebot" style="background: var(--card); border-color: var(--border);">
         <div class="h-60 overflow-hidden relative bg-zinc-900">
-          <img src="IMAGES/SPIKEBOT_PROFILE.png" alt="EV3 Line Follower Robot" class="w-full h-full object-cover">
+          <img src="IMAGES/LINE_FOLLOWER.png" alt="EV3 Line Follower Robot" class="w-full h-full object-contain">
           <div class="absolute bottom-3 left-3 px-2.5 py-1 rounded bg-black/80 backdrop-blur-md border border-zinc-800 font-mono text-[10px]" style="color: var(--cyan);">
-            // CHASSIS &amp; SENSOR ARRAY
+            EV3 Line Following Bot
           </div>
           <div class="absolute top-3 right-3 flex items-center gap-1.5 px-2 py-1 rounded-full bg-black/60 backdrop-blur-sm">
-            <span class="led led-green"></span><span class="font-mono text-[10px]" style="color: var(--green);">COMPLETED</span>
+            <span class="led led-amber"></span><span class="font-mono text-[10px]" style="color: var(--amber);">UPGRADED TO ARDUINO</span>
           </div>
         </div>
         <div class="p-6 flex flex-col flex-1">
           <div class="flex flex-wrap gap-2 mb-3">
             <span class="tag">LEGO EV3</span><span class="tag">INFRARED SENSORS</span><span class="tag">BLOCK LOGIC</span><span class="tag">SPIKEBOT PROFILE</span>
           </div>
-          <h3 class="font-display font-semibold text-xl mb-2">EV3 - Line Follower</h3>
+          <h3 class="font-display font-semibold text-xl mb-2">EV3 Automated Line Follower</h3>
           <p class="text-sm mb-5 flex-1" style="color: var(--muted);">
             The EV3 Line Follower is an autonomous mobile robot built to track and navigate predefined paths without manual intervention. It utilizes infrared sensors and block-programmed motor controls across both LEGO EV3 and Spike Prime platforms to execute guided tracks. The final build demonstrated high precision, excellent cornering accuracy, and reliable path tracking.
           </p>
@@ -417,6 +439,7 @@
           <span class="skill-chip">Servo &amp; DC Motor Control</span>
           <span class="skill-chip">Bluetooth (HC-05)</span>
           <span class="skill-chip">Infrared Sensors</span>
+          <span class="skill-chip">Camera Module</span>
         </div>
       </div>
       <div class="fade-up rounded-lg border p-6" style="background: var(--panel); border-color: var(--border);">
@@ -498,6 +521,21 @@
 
   // Dynamic Case Studies & Slideshow Data
   const caseStudies = {
+
+    camera: {
+      title: "Camera Module Interface",
+      desc: "Full architectural breakdown covering embedded sensor setup, high-baud rate data streaming, and custom desktop UI integration.",
+      images: [
+        { src: "IMAGES/CAMERA_MODULE.jpeg", label: "Camera Module Circuitry" },
+        { src: "IMAGES/CAMERA OUTPUT.png", label: "Frame Output" }
+      ],
+      sections: [
+        { title: "Project Objective", items: ["Establish an onboard machine vision framework by interfacing a camera module to stream and capture images.", "Process and synchronize image frames on a host application via high-speed serial communication."] },
+        { title: "Engineering Execution", items: ["Integrated an OV7670 camera module to capture raw image data.", "Configured a high-speed 500000 bps UART connection for fast image data transfer."] },
+        { title: "System Results", items: ["Successfully streamed and reconstructed raw frame data on the host interface.", "Laid the foundational framework for future real-time onboard computer vision and image-processing tasks."] }
+      ]
+    },
+
     rover: {
       title: "Bluetooth-Enabled Rover System",
       desc: "Comprehensive breakdown of wireless omni-directional platform design.",
@@ -513,7 +551,7 @@
       ]
     },
     gate: {
-      title: "Intelligent Automated Access Gate",
+      title: "Intelligent Automated Gate Design",
       desc: "Design and deployment details of an automated, smart vehicle tracking platform.",
       images: [
         { src: "IMAGES/GATE_DESIGN.png", label: "16x2 LCD Real-Time Availability Display" },
@@ -528,12 +566,12 @@
       ]
     },
     elevator: {
-      title: "EV3 Multi-Story Elevator Shaft System",
+      title: "EV3 - Elevator Shaft System",
       desc: "Refining mechanical hoist platforms from basic educational modules to structured controllers.",
       images: [
-        { src: "IMAGES/ELEVATOR_SHAFT.png", label: "// FULL HOIST SHAFT & TOWER STRUCTURE" },
-        { src: "IMAGES/ELEVATOR_SHAFT_1.png", label: "// LIFT CARRIAGE & SAFETY SERVO GATES" },
-        { src: "IMAGES/ELEVATOR_SHAFT_3.png", label: "// ARDUINO CONTROL INTERFACE & DISPLAY" }
+        { src: "IMAGES/ELEVATOR_SHAFT_3.png", label: "Full Hoist Shaft & Tower Structure" },
+        { src: "IMAGES/ELEVATOR_MOTOR.jpeg", label: "Lift Carriage & Motor Control" },
+        { src: "IMAGES/LCD_ELEVATOR.png", label: "Arduino Control Interface & Display" }
       ],
       sections: [
         { title: "Project Objective", items: ["Design an elevator shaft system using the LEGO Mindstorms EV3 kit to lift cargo across multiple stories."] },
@@ -545,9 +583,9 @@
       title: "EV3 Automated Line Follower",
       desc: "Autonomous trajectory tracking based on infrared boundary response mechanics.",
       images: [
-        { src: "IMAGES/SPIKEBOT_PROFILE.png", label: "// SPIKEBOT PROFILE & CHASSIS STRUCTURE" },
-        { src: "IMAGES/SPIKEBOT_TOP.png", label: "// TOP-DOWN COMPONENT LAYOUT" },
-        { src: "IMAGES/CAMERA_OUTPUT.png", label: "// OPTICAL TRACKING FEED & SENSOR DATA" }
+        { src: "IMAGES/LINE_FOLLOWER.png", label: "EV3 Line Following Bot" },
+        { src: "IMAGES/SPIKE.png", label: "Spikebot Top-Down Component Layout" },
+        { src: "IMAGES/SPIKEBOT_1.png", label: "Front-View Spikebot" }
       ],
       sections: [
         { title: "Project Objective", items: ["Develop an autonomous robotic platform to traverse complex geometric floor tracks without operator intervention."] },
