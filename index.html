@@ -15,6 +15,7 @@
     --border: #1e2731;
     --border-hover: #2a3742;
     --cyan: #22d3ee;
+    --green:#22f007;
     --cyan-dim: #0e7490;
     --amber: #f59e0b;
     --text: #e6edf3;
@@ -43,6 +44,9 @@
     animation: blink 2.4s ease-in-out infinite;
   }
   .led-amber{ background: var(--amber); box-shadow: 0 0 6px 1px var(--amber); animation-delay: .6s;}
+  @keyframes blink{ 0%,100%{opacity:1;} 50%{opacity:.25;} }
+
+  .led-green{ background: var(--green); box-shadow: 0 0 6px 1px var(--green); animation-delay: .6s;}
   @keyframes blink{ 0%,100%{opacity:1;} 50%{opacity:.25;} }
 
   .trace-path{
@@ -128,12 +132,12 @@
 
   #caseModal{
     position: fixed; inset: 0; z-index: 100;
-    background: rgba(4,6,9,0.82);
-    backdrop-filter: blur(4px);
+    background: rgba(4,6,9,0.85);
+    backdrop-filter: blur(6px);
     display: none;
     align-items: flex-start;
     justify-content: center;
-    padding: 6vh 20px;
+    padding: 4vh 20px;
     overflow-y: auto;
   }
   #caseModal.open{ display: flex; }
@@ -141,7 +145,7 @@
     background: var(--panel);
     border: 1px solid var(--border);
     border-radius: 8px;
-    max-width: 780px;
+    max-width: 820px;
     width: 100%;
     padding: 32px;
     position: relative;
@@ -149,12 +153,12 @@
   }
   @keyframes modalIn{ from{ opacity:0; transform: translateY(12px);} to{opacity:1; transform:translateY(0);} }
   #caseModalClose{
-    position: absolute; top: 20px; right: 20px;
+    position: absolute; top: 20px; right: 20px; z-index: 10;
     font-family: 'JetBrains Mono', monospace;
     font-size: 12px; color: var(--muted);
     border: 1px solid var(--border);
     padding: 6px 10px; border-radius: 4px;
-    cursor: pointer; background: transparent;
+    cursor: pointer; background: var(--card);
   }
   #caseModalClose:hover{ color: var(--text); border-color: var(--cyan); }
   .case-col h4{
@@ -170,6 +174,15 @@
   .case-col li::before{
     content: '›'; position: absolute; left: 0; color: var(--cyan-dim);
   }
+
+  /* Carousel Styles */
+  .carousel-dot{
+    width: 8px; height: 8px; border-radius: 999px;
+    background: var(--border-hover); cursor: pointer; transition: all 0.2s;
+  }
+  .carousel-dot.active{
+    background: var(--cyan); width: 24px;
+  }
 </style>
 </head>
 <body class="antialiased">
@@ -178,14 +191,13 @@
 <header class="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-[#0a0e14]/80 border-b" style="border-color: var(--border);">
   <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
     <a href="#top" class="font-display font-semibold text-lg tracking-tight flex items-center gap-2">
-      <span class="led"></span>
-      JOEL.<span style="color: var(--cyan);">JOFY</span>
+      AUTOMATION <span style="color: var(--cyan);">• ROBOTICS •</span> EMBEDDED SYSTEMS
     </a>
     <nav class="hidden md:flex items-center gap-8 font-mono text-[13px]" style="color: var(--muted);">
       <a href="#about" class="hover:text-white">ABOUT</a>
       <a href="#projects" class="hover:text-white">PROJECTS</a>
       <a href="#skills" class="hover:text-white">SKILLS</a>
-      <a href="#contact" class="hover:text-white">CONTACT</a>
+      <a href="#contact" class="hover:text-white">LET'S CONNECT</a>
     </nav>
     <a href="#contact" class="filter-btn hidden sm:inline-block">GET IN TOUCH →</a>
   </div>
@@ -244,12 +256,13 @@
 <section id="about" class="py-24 border-b" style="border-color: var(--border);">
   <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-3 gap-12">
     <div class="fade-up">
-      <div class="pin-label" data-pin="// 01"></div>
+      <div class="pin-label" data-pin="_____________"></div>
       <h2 class="font-display font-semibold text-3xl">About</h2>
     </div>
     <div class="fade-up md:col-span-2 text-lg leading-relaxed" style="color: var(--muted);">
       <p class="mb-4">
         I am an Automation &amp; Robotics Engineering student passionate about building intelligent systems that combine hardware, software, and mechanical design. I learn best through hands-on experimentation and iterative development, turning ideas into practical and reliable engineering solutions.
+      </p>
       <p>
         I am particularly interested in robotics, embedded systems, and automation technologies that solve real-world problems. I am always eager to take on challenging projects that push me to learn, innovate, and grow as an engineer.
       </p>
@@ -261,25 +274,29 @@
 <section id="projects" class="py-24 border-b" style="border-color: var(--border);">
   <div class="max-w-6xl mx-auto px-6">
     <div class="fade-up mb-10">
-      <div class="pin-label" data-pin="// 02"></div>
+      <div class="pin-label" data-pin="_________________"></div>
       <h2 class="font-display font-semibold text-3xl mb-2">Projects</h2>
-      <p class="text-sm max-w-xl" style="color: var(--muted);">Selected builds spanning embedded control, mechanical automation, and wireless systems[cite: 1].</p>
+      <p class="text-sm max-w-xl" style="color: var(--muted);">Selected builds spanning embedded control, mechanical automation, and wireless systems.</p>
     </div>
 
     <div class="fade-up flex flex-wrap gap-3 mb-10" id="filterBar">
       <button class="filter-btn active" data-filter="all">ALL</button>
-      <button class="filter-btn" data-filter="hardware">ROBOTICS / HARDWARE</button>
-      <button class="filter-btn" data-filter="software">SOFTWARE / AUTOMATION</button>
+      <button class="filter-btn" data-filter="arduino">ARDUINO</button>
+      <button class="filter-btn" data-filter="spikebot">SPIKEBOT</button>
+      <button class="filter-btn" data-filter="ev3">EV3 MINDSTORM</button>
     </div>
 
     <div id="projectGrid" class="grid sm:grid-cols-2 lg:grid-cols-2 gap-8">
 
       <!-- Project 1: Bluetooth-Enabled Rover -->
-      <div class="project-card card-hover rounded-lg border overflow-hidden flex flex-col" data-cat="hardware" style="background: var(--card); border-color: var(--border);">
-        <div class="h-52 overflow-hidden relative bg-zinc-900 flex items-center justify-center">
-          <img src="IMAGES/ROVER_&_REMOTE.png" alt="ROVER_REMOTE">
+      <div class="project-card card-hover rounded-lg border overflow-hidden flex flex-col" data-cat="arduino" style="background: var(--card); border-color: var(--border);">
+        <div class="h-60 overflow-hidden relative bg-zinc-900">
+          <img src="IMAGES/ROVER_&_REMOTE.png" alt="Bluetooth Rover System" class="w-full h-full object-cover">
+          <div class="absolute bottom-3 left-3 px-2.5 py-1 rounded bg-black/80 backdrop-blur-md border border-zinc-800 font-mono text-[10px]" style="color: var(--cyan);">
+            Rover Platform & Control Interface
+          </div>
           <div class="absolute top-3 right-3 flex items-center gap-1.5 px-2 py-1 rounded-full bg-black/60 backdrop-blur-sm">
-            <span class="led"></span><span class="font-mono text-[10px]" style="color: var(--cyan);">COMPLETED</span>
+            <span class="led led-green"></span><span class="font-mono text-[10px]" style="color: var(--green);">COMPLETED</span>
           </div>
         </div>
         <div class="p-6 flex flex-col flex-1">
@@ -288,18 +305,21 @@
           </div>
           <h3 class="font-display font-semibold text-xl mb-2">Bluetooth-Enabled Rover System</h3>
           <p class="text-sm mb-5 flex-1" style="color: var(--muted);">
-            Designed a remotely operated omni-directional vehicle using Arduino wireless control[cite: 1]. Integrates a physical joystick remote configuration for highly responsive, stable real-time steering[cite: 1]. Focused heavily on maximizing system efficiency to ensure high operational battery life with minimal maintenance parameters[cite: 1].
+            The Bluetooth-Enabled Rover System is a remotely operated omni-directional vehicle designed for high power efficiency and low maintenance. Built using an Arduino, a Bluetooth module, and a joystick interface for real-time steering, it delivers smooth, responsive wireless control with minimal operational overhead.
           </p>
           <button onclick="openCaseStudy('rover')" class="mt-auto font-mono text-xs px-4 py-2 rounded-md border self-start hover:border-cyan-400 transition" style="border-color: var(--border); color: var(--cyan);">
-            VIEW_METRICS →
+            Learn More >>>
           </button>
         </div>
       </div>
 
       <!-- Project 2: Intelligent Automated Gate -->
-      <div class="project-card card-hover rounded-lg border overflow-hidden flex flex-col" data-cat="hardware software" style="background: var(--card); border-color: var(--border);">
-        <div class="h-52 overflow-hidden relative bg-zinc-900 flex items-center justify-center">
-          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADIAQMAAAC5Fi4FAAAABlBMVEUAAAD///+l2Z/dAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAYklEQVRIie3SMQ2AMBAF0EeChEASMEkJSEIC/hLggKbg5Kip36bcvVd+uYx5xpzjjjnHnOPnMnfcAwEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBm8AYX4cSDN/U3K5PAAAAAElFTkSuQmCC" class="w-full h-full object-cover" alt="Intelligent Automated Gate Design">
+      <div class="project-card card-hover rounded-lg border overflow-hidden flex flex-col" data-cat="arduino" style="background: var(--card); border-color: var(--border);">
+        <div class="h-60 overflow-hidden relative bg-zinc-900">
+          <img src="IMAGES/GATE_DESIGN.png" alt="Intelligent Automated Gate Design" class="w-full h-full object-cover">
+          <div class="absolute bottom-3 left-3 px-2.5 py-1 rounded bg-black/80 backdrop-blur-md border border-zinc-800 font-mono text-[10px]" style="color: var(--cyan);">
+            Prototype_1
+          </div>
           <div class="absolute top-3 right-3 flex items-center gap-1.5 px-2 py-1 rounded-full bg-black/60 backdrop-blur-sm">
             <span class="led"></span><span class="font-mono text-[10px]" style="color: var(--cyan);">STABLE PROTOTYPE</span>
           </div>
@@ -310,18 +330,21 @@
           </div>
           <h3 class="font-display font-semibold text-xl mb-2">Intelligent Automated Gate Design</h3>
           <p class="text-sm mb-5 flex-1" style="color: var(--muted);">
-            An intelligent vehicle access control system integrating precise ultrasonic detection and servo-driven automation[cite: 1]. Features a custom 16x2 LCD UI tracking parking availability dynamically[cite: 1]. Designed as a robust, scalable, low-cost platform that successfully overcomes contrast, timing, and data synchronization hurdles[cite: 1].
+            The Intelligent Automated Gate Design is an automated access control system created to manage vehicle entry and monitor parking availability in real time. It integrates an Arduino, ultrasonic sensors, a servo motor gate, and an LCD status display to track vehicles accurately. Through iterative testing, the project successfully resolved data synchronization challenges to deliver precise, reliable parking tracking.
           </p>
           <button onclick="openCaseStudy('gate')" class="mt-auto font-mono text-xs px-4 py-2 rounded-md border self-start hover:border-cyan-400 transition" style="border-color: var(--border); color: var(--cyan);">
-            VIEW_METRICS →
+            Learn More >>>
           </button>
         </div>
       </div>
 
       <!-- Project 3: EV3 Elevator Shaft System -->
-      <div class="project-card card-hover rounded-lg border overflow-hidden flex flex-col" data-cat="hardware software" style="background: var(--card); border-color: var(--border);">
-        <div class="h-52 overflow-hidden relative bg-zinc-900 flex items-center justify-center">
-          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAADIAQMAAAAHJ2yPAAAABlBMVEUAAAD///+l2Z/dAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAWElEQVRIie3SMQ3AIBAEwccgoAP8S4AGDCEpOD2qqdcl2b1d3swx5hxzjLnGnGNc5q6/BwEBARsCArYEBGwICNgQELAhIGBDQMCGgIANAQEbAgI2BARsCBjjA3ovC99zGkcaAAAAAElFTkSuQmCC" class="w-full h-full object-cover" alt="EV3 Elevator Shaft System">
+      <div class="project-card card-hover rounded-lg border overflow-hidden flex flex-col" data-cat="arduino ev3" style="background: var(--card); border-color: var(--border);">
+        <div class="h-60 overflow-hidden relative bg-zinc-900">
+          <img src="IMAGES/ELEVATOR_SHAFT.png" alt="EV3 Elevator Shaft System" class="w-full h-full object-cover">
+          <div class="absolute bottom-3 left-3 px-2.5 py-1 rounded bg-black/80 backdrop-blur-md border border-zinc-800 font-mono text-[10px]" style="color: var(--cyan);">
+            // MECHANICAL HOIST &amp; SHAFT
+          </div>
           <div class="absolute top-3 right-3 flex items-center gap-1.5 px-2 py-1 rounded-full bg-black/60 backdrop-blur-sm">
             <span class="led led-amber"></span><span class="font-mono text-[10px]" style="color: var(--amber);">UPGRADED TO ARDUINO</span>
           </div>
@@ -332,20 +355,23 @@
           </div>
           <h3 class="font-display font-semibold text-xl mb-2">EV3 - Elevator Shaft System</h3>
           <p class="text-sm mb-5 flex-1" style="color: var(--muted);">
-            Multi-story cargo lift system originally designed on LEGO EV3[cite: 1]. Evolved into a premium industrial prototype by switching to an Arduino Uno architecture with custom UI telemetry tracking[cite: 1]. Features dual safety servo motors inside the shaft operating as active container security gates[cite: 1].
+            The EV3 Elevator Shaft System is a multi-story cargo lifting platform engineered to carry heavy loads securely. The system was upgraded from a LEGO EV3 brick to an Arduino Uno controller paired with dual servo safety gates and a dedicated status display. This hardware transition enabled live status tracking while allowing the structure to exceed its initial load capacity expectations.
           </p>
           <button onclick="openCaseStudy('elevator')" class="mt-auto font-mono text-xs px-4 py-2 rounded-md border self-start hover:border-cyan-400 transition" style="border-color: var(--border); color: var(--cyan);">
-            VIEW_METRICS →
+            Learn More >>>
           </button>
         </div>
       </div>
 
       <!-- Project 4: EV3 Line Follower -->
-      <div class="project-card card-hover rounded-lg border overflow-hidden flex flex-col" data-cat="hardware" style="background: var(--card); border-color: var(--border);">
-        <div class="h-52 overflow-hidden relative bg-zinc-900 flex items-center justify-center">
-          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAADIAQMAAAAHJ2yPAAAABlBMVEUAAAD///+l2Z/dAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAWElEQVRIie3SMQ3AIBAEwccgoAP8S4AGDCEpOD2qqdcl2b1d3swx5hxzjLnGnGNc5q6/BwEBARsCArYEBGwICNgQELAhIGBDQMCGgIANAQEbAgI2BARsCBjjA3ovC99zGkcaAAAAAElFTkSuQmCC" class="w-full h-full object-cover" alt="EV3 Line Follower Robot">
+      <div class="project-card card-hover rounded-lg border overflow-hidden flex flex-col" data-cat="ev3 spikebot" style="background: var(--card); border-color: var(--border);">
+        <div class="h-60 overflow-hidden relative bg-zinc-900">
+          <img src="IMAGES/SPIKEBOT_PROFILE.png" alt="EV3 Line Follower Robot" class="w-full h-full object-cover">
+          <div class="absolute bottom-3 left-3 px-2.5 py-1 rounded bg-black/80 backdrop-blur-md border border-zinc-800 font-mono text-[10px]" style="color: var(--cyan);">
+            // CHASSIS &amp; SENSOR ARRAY
+          </div>
           <div class="absolute top-3 right-3 flex items-center gap-1.5 px-2 py-1 rounded-full bg-black/60 backdrop-blur-sm">
-            <span class="led"></span><span class="font-mono text-[10px]" style="color: var(--cyan);">COMPLETED</span>
+            <span class="led led-green"></span><span class="font-mono text-[10px]" style="color: var(--green);">COMPLETED</span>
           </div>
         </div>
         <div class="p-6 flex flex-col flex-1">
@@ -354,10 +380,10 @@
           </div>
           <h3 class="font-display font-semibold text-xl mb-2">EV3 - Line Follower</h3>
           <p class="text-sm mb-5 flex-1" style="color: var(--muted);">
-            Fully automated trajectory tracking robot engineered to navigate complex tracks with zero human intervention[cite: 1]. Utilizes fine-tuned infrared sensors combined with motor logic blocks to ensure high positional feedback accuracy during aggressive cornering[cite: 1].
+            The EV3 Line Follower is an autonomous mobile robot built to track and navigate predefined paths without manual intervention. It utilizes infrared sensors and block-programmed motor controls across both LEGO EV3 and Spike Prime platforms to execute guided tracks. The final build demonstrated high precision, excellent cornering accuracy, and reliable path tracking.
           </p>
           <button onclick="openCaseStudy('line')" class="mt-auto font-mono text-xs px-4 py-2 rounded-md border self-start hover:border-cyan-400 transition" style="border-color: var(--border); color: var(--cyan);">
-            VIEW_METRICS →
+            Learn More >>>
           </button>
         </div>
       </div>
@@ -371,7 +397,7 @@
   <div class="max-w-6xl mx-auto px-6">
     <div class="fade-up flex items-end justify-between mb-12">
       <div>
-        <div class="pin-label" data-pin="// 03"></div>
+        <div class="pin-label" data-pin="_____________________"></div>
         <h2 class="font-display font-semibold text-3xl">Core Skills</h2>
       </div>
       <p class="hidden sm:block text-sm max-w-xs text-right" style="color: var(--muted);">
@@ -421,12 +447,13 @@
 <footer id="contact" class="py-20 relative overflow-hidden">
   <div class="scan"></div>
   <div class="max-w-6xl mx-auto px-6 relative">
-    <h2 class="font-display font-semibold text-3xl mb-4">Contact</h2>
+    <h2 class="font-display font-semibold text-3xl mb-4">Let's Connect</h2>
     <p class="max-w-lg mb-10" style="color: var(--muted);">
-      IN ORDER TO CONTACT ME
+      Interested in robotics, automation, or embedded systems?
+      I'd love to discuss projects, opportunities, and collaborations.
     </p>
     <div class="flex flex-wrap gap-4 mb-16">
-      <a href="mailto:joeljofy@gmail.com" class="px-6 py-3 rounded-md font-mono text-sm font-medium" style="background: var(--cyan); color: #001015;">E-mail me →</a>
+      <a href="mailto:joeljofy@gmail.com" class="px-6 py-3 rounded-md font-mono text-sm font-medium" style="background: var(--cyan); color: #001015;">Send an E-mail →</a>
       <span class="px-6 py-3 rounded-md font-mono text-sm border flex items-center" style="border-color: var(--border); color: var(--text);">+61-425-306-541</span>
       <a href="https://www.linkedin.com/in/joeljofy--2007--" target="_blank" class="px-6 py-3 rounded-md font-mono text-sm border" style="border-color: var(--border); color: var(--text);">LINKEDIN</a>
     </div>
@@ -440,7 +467,7 @@
 <!-- CASE STUDY MODAL -->
 <div id="caseModal">
   <div id="caseModalPanel">
-    <button id="caseModalClose" onclick="closeModal()">CLOSE // X</button>
+    <button id="caseModalClose" onclick="closeModal()">Close X</button>
     <div id="modalContent"></div>
   </div>
 </div>
@@ -469,51 +496,102 @@
     });
   });
 
-  // Dynamic Case Studies Data
+  // Dynamic Case Studies & Slideshow Data
   const caseStudies = {
     rover: {
       title: "Bluetooth-Enabled Rover System",
-      desc: "Comprehensive breakdown of wireless omni-directional platform design[cite: 1].",
+      desc: "Comprehensive breakdown of wireless omni-directional platform design.",
+      images: [
+        { src: "IMAGES/ROVER_&_REMOTE.png", label: "Rover Platform & Control Interface" },
+        { src: "IMAGES/INITIAL_REMOTE.png", label: "Initial Control Panel" },
+        { src: "IMAGES/PROTOTYPE.png", label: "Prototype " }
+      ],
       sections: [
-        { title: "Project Objective", items: ["Design a remotely operated omni-directional vehicle configuration[cite: 1].", "Ensure extended operational runtimes with minimal system degradation[cite: 1]."] },
-        { title: "Engineering Execution", items: ["Integrated wireless communication layers using Arduino microcontrollers and HC-05 modules[cite: 1].", "Implemented a physical analog joystick hardware interface for direct real-time trajectory adjustment[cite: 1]."] },
-        { title: "System Results", items: ["Achieved seamless, low-latency omni-directional mobility performance[cite: 1].", "Demonstrated optimal power profiles and reliable hardware stability under continuous load cycles[cite: 1]."] }
+        { title: "Project Objective", items: ["Design a remotely operated omni-directional vehicle.", "Ensure long battery life with minimal maintenance requirements."] },
+        { title: "Engineering Execution", items: ["Used an Arduino and Bluetooth module to enable wireless communication between the vehicle and control system.", "Integrated a joystick interface for real-time steering."] },
+        { title: "System Results", items: ["Integrated a joystick interface for real-time steering.", "Demonstrated reliable system performance with efficient power usage and minimal maintenance."] }
       ]
     },
     gate: {
       title: "Intelligent Automated Access Gate",
-      desc: "Design and deployment details of an automated, smart vehicle tracking platform[cite: 1].",
+      desc: "Design and deployment details of an automated, smart vehicle tracking platform.",
+      images: [
+        { src: "IMAGES/GATE_DESIGN.png", label: "16x2 LCD Real-Time Availability Display" },
+        { src: "IMAGES/GATE_DESIGN_1.png", label: "ULTRASONIC SENSOR & SERVO MOTOR MECHANISM" },
+        { src: "IMAGES/LCD_GATE.png", label: "16x2 LCD REAL-TIME AVAILABILITY DISPLAY" },
+        { src: "IMAGES/GATE_DESIGN_2.png", label: "OVERALL SYSTEM ASSEMBLy" }
+      ],
       sections: [
-        { title: "Project Objective", items: ["Build an automated perimeter gate capable of efficient vehicle access management[cite: 1].", "Integrate real-time tracking systems to accurately display localized slot vacancies[cite: 1]."] },
-        { title: "Engineering Execution", items: ["Utilized ultrasonic arrays paired with microcontrollers for high-accuracy obstacle profiling[cite: 1].", "Programmed intelligent servo-driven gate mechanics and synced them to a standard 16x2 LCD panel[cite: 1].", "Overcame timing anomalies, contrast drops, and data bus sync limits through detailed iterative debugging[cite: 1]."] },
-        { title: "System Results", items: ["Delivered steady, zero-drift target detection with smooth servo gate mechanical cycles[cite: 1].", "Maintained an accurate live data readout to display current slot capacity[cite: 1].", "Produced a highly cost-efficient, industrial-ready prototype ready for scalable deployment[cite: 1]."] }
+        { title: "Project Objective", items: ["Design and develop an intelligent automated gate system for efficient vehicle access control.", "Enable real-time monitoring and display of parking space availability."] },
+        { title: "Engineering Execution", items: ["Built using an Arduino with ultrasonic sensors for vehicle detection and tracking.", "Automated physical gate operation using a servo motor.","Integrated an LCD interface to display real-time status and space availability.",] },
+        { title: "System Results", items: ["Achieved precise and reliable vehicle detection with consistent gate automation.", "Delivered real-time, user-friendly parking availability updates.", "Developed a robust, low-cost prototype with strong scalability potential."] }
       ]
     },
     elevator: {
       title: "EV3 Multi-Story Elevator Shaft System",
-      desc: "Refining mechanical hoist platforms from basic educational modules to structured controllers[cite: 1].",
+      desc: "Refining mechanical hoist platforms from basic educational modules to structured controllers.",
+      images: [
+        { src: "IMAGES/ELEVATOR_SHAFT.png", label: "// FULL HOIST SHAFT & TOWER STRUCTURE" },
+        { src: "IMAGES/ELEVATOR_SHAFT_1.png", label: "// LIFT CARRIAGE & SAFETY SERVO GATES" },
+        { src: "IMAGES/ELEVATOR_SHAFT_3.png", label: "// ARDUINO CONTROL INTERFACE & DISPLAY" }
+      ],
       sections: [
-        { title: "Project Objective", items: ["Construct a modular elevator framework capable of carrying payload securely across distinct floor zones[cite: 1]."] },
-        { title: "Engineering Execution", items: ["Programmed the original movement cycle using block logic arrays to drive dual high-torque motors[cite: 1].", "Upgraded system electronics by replacing the block-level system with a dedicated Arduino Uno core[cite: 1].", "Added dual micro-servos internally to act as physical security barriers to protect the cargo payload[cite: 1]."] },
-        { title: "System Results", items: ["The heavy-duty physical hoist system successfully carried weight volumes exceeding original load predictions[cite: 1].", "Identified and balanced micro-instabilities caused by suspension line flexing[cite: 1].", "The clean text layout upgrade provided structured real-time metrics tracking the lift platform's exact position[cite: 1]."] }
+        { title: "Project Objective", items: ["Design an elevator shaft system using the LEGO Mindstorms EV3 kit to lift cargo across multiple stories."] },
+        { title: "Engineering Execution", items: ["Programmed EV3 motor controls using block programming for manual operation.", "Later upgraded the system control unit by replacing the EV3 Mindstorm brick with an Arduino Uno paired with a dedicated display.", "Added dual micro-servos internally to act as physical security barriers to protect the cargo payload."] },
+        { title: "System Results", items: ["Successfully carried loads exceeding initial estimates.", "Identified minor instability caused by the attachment strings, prompting structure refinements.", "The transition to Arduino gave the system a professional finish and enabled live status tracking via the display."] }
       ]
     },
     line: {
       title: "EV3 Automated Line Follower",
-      desc: "Autonomous trajectory tracking based on infrared boundary response mechanics[cite: 1].",
+      desc: "Autonomous trajectory tracking based on infrared boundary response mechanics.",
+      images: [
+        { src: "IMAGES/SPIKEBOT_PROFILE.png", label: "// SPIKEBOT PROFILE & CHASSIS STRUCTURE" },
+        { src: "IMAGES/SPIKEBOT_TOP.png", label: "// TOP-DOWN COMPONENT LAYOUT" },
+        { src: "IMAGES/CAMERA_OUTPUT.png", label: "// OPTICAL TRACKING FEED & SENSOR DATA" }
+      ],
       sections: [
-        { title: "Project Objective", items: ["Develop an autonomous robotic platform to traverse complex geometric floor tracks without operator intervention[cite: 1]."] },
-        { title: "Engineering Execution", items: ["Mapped closed-loop motor reactions using infrared light reflection sensors[cite: 1].", "Programmed automated control logic blocks to handle instantaneous cross-track changes[cite: 1]."] },
-        { title: "System Results", items: ["Achieved consistent tracking behavior along standard black path lines with zero operator correction[cite: 1].", "Demonstrated high steering precision and track retention through aggressive, high-speed corner profiles[cite: 1]."] }
+        { title: "Project Objective", items: ["Develop an autonomous robotic platform to traverse complex geometric floor tracks without operator intervention."] },
+        { title: "Engineering Execution", items: ["Utilized infrared (IR) sensors to achieve full autonomy along guided tracks.", "Demonstrated high steering precision and track retention through aggressive, high-speed corner profiles.","Expanded design principles to build similar autonomous routines using LEGO Spike Prime platforms."] },
+        { title: "System Results", items: ["Successfully tracked and followed black lines autonomously without manual corrections.", "Demonstrated high precision and cornering accuracy during path execution."]}
       ]
     }
   };
 
+  let currentSlideIndex = 0;
+  let activeProjectImages = [];
+
   function openCaseStudy(id) {
     const study = caseStudies[id];
+    activeProjectImages = study.images || [];
+    currentSlideIndex = 0;
+
     let html = `
-      <h3 class="font-display font-semibold text-2xl mb-2" style="color:var(--text);">${study.title}</h3>
-      <p class="text-sm font-mono mb-8" style="color:var(--cyan);">${study.desc}</p>
+      <h3 class="font-display font-semibold text-2xl mb-1" style="color:var(--text);">${study.title}</h3>
+      <p class="text-sm font-mono mb-6" style="color:var(--cyan);">${study.desc}</p>
+      
+      <!-- IMAGE SLIDESHOW CONTAINER -->
+      <div class="relative w-full h-80 sm:h-96 rounded-lg overflow-hidden mb-8 border bg-black/50" style="border-color: var(--border);">
+        <img id="carouselImg" src="${activeProjectImages[0].src}" alt="Slide Image" class="w-full h-full object-contain  transition-all duration-300">
+        
+        <!-- IMAGE CAPTION OVERLAY -->
+        <div id="carouselCaption" class="absolute bottom-4 left-4 px-3 py-1.5 rounded bg-black/85 backdrop-blur-md border border-zinc-800 font-mono text-[11px]" style="color: var(--cyan);">
+          ${activeProjectImages[0].label}
+        </div>
+
+        <!-- PREV / NEXT BUTTONS -->
+        <button onclick="changeSlide(-1)" class="absolute left-3 top-1/2 -translate-y-1/2 p-3 rounded-full bg-black/70 hover:bg-black text-white font-mono text-sm border border-zinc-700 transition">
+          &#10094;
+        </button>
+        <button onclick="changeSlide(1)" class="absolute right-3 top-1/2 -translate-y-1/2 p-3 rounded-full bg-black/70 hover:bg-black text-white font-mono text-sm border border-zinc-700 transition">
+          &#10095;
+        </button>
+
+        <!-- DOTS INDICATOR -->
+        <div class="absolute bottom-4 right-4 flex gap-2" id="carouselDots">
+          ${activeProjectImages.map((_, i) => `<span onclick="goToSlide(${i})" class="carousel-dot ${i === 0 ? 'active' : ''}"></span>`).join('')}
+        </div>
+      </div>
+
       <div class="grid md:grid-cols-3 gap-6 text-left">
     `;
     
@@ -532,6 +610,32 @@
     document.getElementById('modalContent').innerHTML = html;
     document.getElementById('caseModal').classList.add('open');
     document.body.style.overflow = 'hidden';
+  }
+
+  function changeSlide(direction) {
+    if (!activeProjectImages.length) return;
+    currentSlideIndex = (currentSlideIndex + direction + activeProjectImages.length) % activeProjectImages.length;
+    updateCarouselUI();
+  }
+
+  function goToSlide(index) {
+    currentSlideIndex = index;
+    updateCarouselUI();
+  }
+
+  function updateCarouselUI() {
+    const imgEl = document.getElementById('carouselImg');
+    const capEl = document.getElementById('carouselCaption');
+    const dots = document.querySelectorAll('.carousel-dot');
+
+    if (imgEl && activeProjectImages[currentSlideIndex]) {
+      imgEl.src = activeProjectImages[currentSlideIndex].src;
+      capEl.innerText = activeProjectImages[currentSlideIndex].label;
+      dots.forEach((dot, idx) => {
+        if (idx === currentSlideIndex) dot.classList.add('active');
+        else dot.classList.remove('active');
+      });
+    }
   }
 
   function closeModal() {
